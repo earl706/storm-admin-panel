@@ -29,13 +29,13 @@ export default function Navbar({ children }) {
       icon: <FontAwesomeIcon icon={faEye} />,
     },
     {
-      navItem: "IoT",
-      link: "/iot",
+      navItem: "Sensors",
+      link: "/sensors",
       icon: <FontAwesomeIcon icon={faSatelliteDish} />,
     },
     {
       navItem: "API",
-      link: "/api",
+      link: "/api-metrics",
       icon: <FontAwesomeIcon icon={faServer} />,
     },
   ];
@@ -56,7 +56,7 @@ export default function Navbar({ children }) {
                   to={navItem.link}
                   className={({ isActive }) =>
                     isActive
-                      ? "flex w-[213px] text-[14px] drop-shadow-lg justify-start items-center py-[8px] my-2 mb-[10px] px-[10px] rounded-[15px] bg-white text-[#1E6091]"
+                      ? "flex w-[213px] text-[14px] justify-start items-center transition py-[8px] mb-[10px] px-[10px] rounded-[15px] drop-shadow-lg bg-white text-[#1E6091]"
                       : "flex w-[213px] text-[14px] justify-start items-center transition py-[8px] px-[10px] mb-[10px] rounded-[15px] text-[#525252] hover:bg-white hover:drop-shadow-lg hover:text-[#1E6091] "
                   }
                 >
@@ -87,7 +87,7 @@ export default function Navbar({ children }) {
         </div>
       </aside>
       <main className="flex-grow w-[1134px] ml-64">
-        <div className="pl-[40px]">{children}</div>
+        <div className="pl-[40px] pr-[27px]">{children}</div>
       </main>
     </div>
   );

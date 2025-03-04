@@ -79,7 +79,7 @@ export default function Dashboard() {
   ];
   return (
     <>
-      <div className="pt-[15px] pr-[26px]">
+      <div className="pt-[15px]">
         <div className="flex justify-between items-center mb-[18px]">
           <div className="text-[10px]">
             <span className="text-gray-600">Pages / </span>
