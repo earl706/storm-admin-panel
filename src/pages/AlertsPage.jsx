@@ -4,6 +4,7 @@ import { faUser, faGear, faBell } from "@fortawesome/free-solid-svg-icons";
 import SensorsAlertLevelMap from "../components/SensorsAlertLevelMap";
 import AlertsHistory30DaysChart from "../components/AlertsHistory30DaysChart";
 import AlertsAcknowledgedPieChart from "../components/AlertsAcknowledgedPieChart";
+import AlertSourcesPieChart from "../components/AlertSourcesPieChart";
 import "leaflet/dist/leaflet.css";
 
 export default function AlertsPage() {
@@ -430,6 +431,79 @@ export default function AlertsPage() {
         </div>
         <div className="flex w-full justify-center">
           <AlertsAcknowledgedPieChart />
+        </div>
+      </div>
+      <div className="w-full text-center font-bold mb-[20px]">
+        <span className="font-bold text-[14px]">
+          Automated & Manual Alerts Breakdown
+        </span>
+      </div>
+      <div className="flex w-full justify-center items-center gap-[40px] mb-[40px]">
+        <div className="flex flex-col w-full justify-between gap-[40px] mb-[40px]">
+          <div className="flex items-center justify-between w-full pr-[15px] h-[75px] bg-white rounded-[15px] drop-shadow-lg">
+            <div className="flex w-[85%] items-center justify-between">
+              <div className="flex-col w-full items-center justify-center pl-[15px] text-center">
+                <span className=" text-gray-600 font-bold text-[10px]">
+                  IoT Sensor-Triggered Alerts
+                </span>
+                <div className="flex items-center w-full text-center">
+                  <span className="flex justify-end w-full font-bold text-[20px] mr-[5px]">
+                    25
+                  </span>
+                  <span className="flex justify-start w-full font-bold text-[10px] text-[#14AE5C] text-center">
+                    +50%
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              {/* <FontAwesomeIcon
+                      style={{ width: "32px", height: "32px" }}
+                      icon={faCircleRadiation}
+                    /> */}
+            </div>
+          </div>
+          <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex-col items-center justify-center pl-[15px]">
+                <span className="text-gray-600 font-bold text-[8px]">
+                  Weather Model Predictions
+                </span>
+                <div className="flex items-center">
+                  <span className="font-bold text-[20px] mr-[5px]">5</span>
+                  <span className="font-light text-[20px]">| 20%</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
+              {/* <FontAwesomeIcon
+                      style={{ width: "32px", height: "32px" }}
+                      icon={faEye}
+                    /> */}
+            </div>
+          </div>
+          <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
+            <div className="flex items-center justify-between">
+              <div className="flex-col items-center justify-center pl-[15px]">
+                <span className="text-gray-600 font-bold text-[8px]">
+                  Manually Reported Alerts
+                </span>
+                <div className="flex items-center">
+                  <span className="font-bold text-[20px] mr-[5px]">2</span>
+                  <span className="font-light text-[20px]">| 8%</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
+              {/* <FontAwesomeIcon
+                      style={{ width: "32px", height: "32px" }}
+                      icon={faSatelliteDish}
+                    /> */}
+            </div>
+          </div>
+        </div>
+        <div className="flex w-full justify-center">
+          <AlertSourcesPieChart />
         </div>
       </div>
     </>

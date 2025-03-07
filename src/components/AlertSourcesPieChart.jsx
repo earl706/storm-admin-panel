@@ -5,13 +5,17 @@ import { Pie } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const data = {
-  labels: ["Acknowledged", "Unacknowledged"],
+  labels: [
+    "IoT Sensor-Triggered Alerts",
+    "Weather Model Prediction",
+    "Manually Reported Reports",
+  ],
   datasets: [
     {
       label: "",
-      data: [34, 23],
-      backgroundColor: ["#1E6091", "#0E3061"],
-      borderColor: ["#1E6091", "#0E3061"],
+      data: [18, 5, 2],
+      backgroundColor: ["#1E6091", "#0E3061", "#0E0031"],
+      borderColor: ["#1E6091", "#0E3061", "#0E0031"],
       borderWidth: 1,
     },
   ],
@@ -28,6 +32,6 @@ const options = {
   },
 };
 
-export default function AlertsAcknowledgedPieChart() {
+export default function AlertSourcesPieChart() {
   return <Pie data={data} options={options} />;
 }
