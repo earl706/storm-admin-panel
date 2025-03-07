@@ -4,21 +4,22 @@ import { format, subDays } from "date-fns";
 import { faUser, faGear, faBell } from "@fortawesome/free-solid-svg-icons";
 import InsightsHighRiskFloodAreasHeatmap from "../components/InsightsHighRiskFloodAreasHeatmap";
 import FloodProbabilityByRegionLineChart from "../components/FloodProbabilityByRegionLineChart";
+import RainFallFloodProbabilityLineChart from "../components/RainFallFloodProbabilityLineChart";
 
 export default function InsightsPage() {
   const getPast7Days = () => {
     const dates = [];
-    for (let i = 7; i != 0; i--) {
+    for (let i = 0; i != 7; i++) {
       const date = subDays(new Date(), i);
-      dates.push(format(date, "MMM dd"));
+      dates.push(format(date, "MMMM dd"));
     }
     return dates;
   };
 
   const flood_prediction_timeline = getPast7Days().map((day) => ({
     date: day,
-    rainfall: Math.random() * (150 - 50) + 50,
-    river_flow_prbability: Math.random() * (99 - 5) + 5,
+    rainfall: parseInt(Math.random() * (150 - 50) + 50),
+    river_flow_prbability: parseInt(Math.random() * (99 - 5) + 5),
     expected_flood_impact: ["Severe", "High", "Moderate", "Low"][
       Math.floor(Math.random() * 4)
     ],
@@ -224,6 +225,11 @@ export default function InsightsPage() {
           <FloodProbabilityByRegionLineChart />
         </div>
       </div>
+      <div className="w-full text-center font-bold mb-[15px]">
+        <span className="font-bold text-[14px]">
+          Predicted Flood Timeline (7-Day Forecast)
+        </span>
+      </div>
       <div className="w-full bg-white rounded-[15px] mb-[40px] pt-[30px] pb-[26px] drop-shadow-lg">
         <div className="overflow-x-auto">
           <table className="w-full border-collapse">
@@ -261,6 +267,16 @@ export default function InsightsPage() {
               ))}
             </tbody>
           </table>
+        </div>
+      </div>
+      <div className="w-full text-center font-bold mb-[15px]">
+        <span className="font-bold text-[14px]">
+          Predicted Flood Timeline (7-Day Forecast)
+        </span>
+      </div>
+      <div className="w-full bg-white rounded-[15px] mb-[40px] pt-[30px] drop-shadow-lg">
+        <div className="px-[40px] pb-[40px]">
+          <RainFallFloodProbabilityLineChart />
         </div>
       </div>
     </>

@@ -46,7 +46,7 @@ export default function Navbar({ children }) {
           <div className="w-[34px] h-[34px] bg-transparent rounded-[10px] mr-[17px]">
             <img src={stormLogo} alt="" width={40} height={40} />
           </div>
-          <span className="text-[33px] text-[#1E6091]">STORM</span>
+          <span className="text-[33px] text-[#1E6091] ">STORM</span>
         </div>
         <div className="w-full mb-4 text-center font-semibold text-[8px] text-[#1E6091]">
           Smart Tracking Overflow and Rainfall Monitoring
