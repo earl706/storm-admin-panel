@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -13,6 +13,14 @@ import SensorsPage from "./pages/SensorsPage";
 import APIPage from "./pages/APIPage";
 
 function App() {
+  const [deviceType, setDeviceType] = useState("Loading...");
+  const getDeviceType = () => {
+    const ua = navigator.userAgent;
+    if (/Mobi|Android/i.test(ua)) return "Mobile";
+    if (/Tablet|iPad/i.test(ua)) return "Tablet";
+    return "Desktop";
+  };
+
   const routes = [
     { route: "/", component: <Dashboard /> },
     { route: "/alerts", component: <AlertsPage /> },
@@ -21,21 +29,34 @@ function App() {
     { route: "/api-metrics", component: <APIPage /> },
   ];
 
-  return (
-    <>
-      <Router>
-        <Routes>
-          {routes.map((route, index) => (
-            <Route
-              key={index}
-              path={route.route}
-              element={<Navbar>{route.component}</Navbar>}
-            />
-          ))}
-        </Routes>
-      </Router>
-    </>
-  );
+  useEffect(() => {
+    setDeviceType(getDeviceType());
+  }, []);
+  if (deviceType == "Mobile" || deviceType == "Tablet") {
+    return (
+      <>
+        <div className="">
+          Sorry. This application is only available in desktop
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Router>
+          <Routes>
+            {routes.map((route, index) => (
+              <Route
+                key={index}
+                path={route.route}
+                element={<Navbar>{route.component}</Navbar>}
+              />
+            ))}
+          </Routes>
+        </Router>
+      </>
+    );
+  }
 }
 
 export default App;
