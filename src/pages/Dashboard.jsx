@@ -12,6 +12,25 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Dashboard() {
+  const severityColors = {
+    Minor: "green",
+    Moderate: "yellow",
+    Severe: "orange",
+    Critical: "red",
+  };
+
+  const returnSeverityColor = (riverFlowProbability) => {
+    if (75 < riverFlowProbability) {
+      return "red";
+    } else if (50 < riverFlowProbability && riverFlowProbability <= 75) {
+      return "orange";
+    } else if (25 < riverFlowProbability && riverFlowProbability <= 50) {
+      return "yellow";
+    } else {
+      return "green";
+    }
+  };
+
   const alerts = [
     {
       timestamp: "2025-03-01T10:30:00Z",
@@ -49,31 +68,31 @@ export default function Dashboard() {
     {
       region: "Macanhan",
       forecast_date: "2025-03-02",
-      river_flow_probability: "70",
+      river_flow_probability: 20,
       affected_population: "50,000",
     },
     {
       region: "Carmen",
       forecast_date: "2025-03-02",
-      river_flow_probability: "80",
+      river_flow_probability: 80,
       affected_population: "60,000",
     },
     {
       region: "Camaman-an",
       forecast_date: "2025-03-02",
-      river_flow_probability: "97",
+      river_flow_probability: 37,
       affected_population: "15,000",
     },
     {
       region: "Osmena",
       forecast_date: "2025-03-02",
-      river_flow_probability: "78",
+      river_flow_probability: 56,
       affected_population: "40,000",
     },
     {
       region: "Kauswagan",
       forecast_date: "2025-03-02",
-      river_flow_probability: "87",
+      river_flow_probability: 23,
       affected_population: "38,000",
     },
   ];
@@ -209,7 +228,12 @@ export default function Dashboard() {
                       className="transition border-b-[0.20px] border-t-[#808080] hover:bg-gray-50 text-[8px]"
                     >
                       <td className="flex justify-end items-center py-[10px] pl-[30px] pr-[10px]">
-                        <div className="w-[10px] h-[10px] bg-[#D9D9D9]"></div>
+                        <div
+                          className="w-[10px] h-[10px] rounded-full"
+                          style={{
+                            backgroundColor: severityColors[alert.level],
+                          }}
+                        ></div>
                       </td>
                       <td className="py-[10px] pr-[10px]">{alert.timestamp}</td>
                       <td className="py-[10px] pr-[10px]">{alert.source}</td>
@@ -250,7 +274,14 @@ export default function Dashboard() {
                       className="transition border-b-[0.20px] border-t-[#808080] hover:bg-gray-50 text-[8px]"
                     >
                       <td className="flex justify-end items-center py-[10px] pl-[30px] pr-[10px]">
-                        <div className="w-[10px] h-[10px] bg-[#D9D9D9]"></div>
+                        <div
+                          className="w-[10px] h-[10px] rounded-full"
+                          style={{
+                            backgroundColor: returnSeverityColor(
+                              insight.river_flow_probability
+                            ),
+                          }}
+                        ></div>
                       </td>
                       <td className="py-[10px] pr-[10px]">{insight.region}</td>
                       <td className="py-[10px] pr-[10px]">

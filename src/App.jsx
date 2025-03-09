@@ -36,7 +36,7 @@ function App() {
   if (deviceType == "Mobile" || deviceType == "Tablet") {
     return (
       <>
-        <div className="w-full h-screen ">
+        <div className="w-full h-screen">
           <div className="flex justify-center items-center pt-[23px] font-bold overflow-hidden">
             <div className="w-[34px] h-[34px] bg-transparent rounded-[10px] mr-[17px]">
               <img src={stormLogo} alt="" width={40} height={40} />

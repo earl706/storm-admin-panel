@@ -1,12 +1,33 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { format, subDays } from "date-fns";
-import { faUser, faGear, faBell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faGear,
+  faBell,
+  faLocationDot,
+  faCloudRain,
+  faPeopleGroup,
+  faBuilding,
+  faParachuteBox,
+} from "@fortawesome/free-solid-svg-icons";
 import InsightsHighRiskFloodAreasHeatmap from "../components/InsightsHighRiskFloodAreasHeatmap";
 import FloodProbabilityByRegionLineChart from "../components/FloodProbabilityByRegionLineChart";
 import RainFallFloodProbabilityLineChart from "../components/RainFallFloodProbabilityLineChart";
 
 export default function InsightsPage() {
+  const severityColors = {
+    Low: "green",
+    Minor: "yellow",
+    Moderate: "orange",
+    High: "red",
+  };
+  const floodSeverityColors = {
+    Low: "green",
+    Moderate: "yellow",
+    High: "orange",
+    Severe: "red",
+  };
   const getPast7Days = () => {
     const dates = [];
     for (let i = 0; i != 7; i++) {
@@ -96,7 +117,12 @@ export default function InsightsPage() {
             <span className="text-black text-[20px] font-bold">3</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faLocationDot}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -107,7 +133,12 @@ export default function InsightsPage() {
             <span className="text-black text-[20px] font-bold">5</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faCloudRain}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -118,7 +149,12 @@ export default function InsightsPage() {
             <span className="text-black text-[20px] font-bold">24,000</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faPeopleGroup}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -133,7 +169,12 @@ export default function InsightsPage() {
             </span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faBuilding}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -146,7 +187,12 @@ export default function InsightsPage() {
             </span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faParachuteBox}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -189,7 +235,13 @@ export default function InsightsPage() {
                   className="transition hover:bg-gray-50 text-[9px]"
                 >
                   <td className="flex justify-end items-center py-[10px] pr-[10px]">
-                    <div className="w-[10px] h-[10px] bg-[#D9D9D9]"></div>
+                    <div
+                      className="w-[10px] h-[10px] rounded-full"
+                      style={{
+                        backgroundColor:
+                          severityColors[risk_analysis.infrastructure_damage],
+                      }}
+                    ></div>
                   </td>
                   <td className="py-[10px]">{risk_analysis.region}</td>
                   <td className="py-[10px]">
@@ -253,7 +305,13 @@ export default function InsightsPage() {
                   className="transition hover:bg-gray-50 text-[9px]"
                 >
                   <td className="flex justify-end items-center py-[10px] pr-[10px]">
-                    <div className="w-[10px] h-[10px] bg-[#D9D9D9]"></div>
+                    <div
+                      className="w-[10px] h-[10px] rounded-full"
+                      style={{
+                        backgroundColor:
+                          floodSeverityColors[prediction.expected_flood_impact],
+                      }}
+                    ></div>
                   </td>
                   <td className="py-[10px]">{prediction.date}</td>
                   <td className="py-[10px]">{prediction.rainfall}</td>

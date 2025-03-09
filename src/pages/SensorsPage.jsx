@@ -1,10 +1,20 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { format, subDays } from "date-fns";
-import { faUser, faGear, faBell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faGear,
+  faBell,
+  faParachuteBox,
+  faSatelliteDish,
+  faCloudMoonRain,
+  faEarthAsia,
+} from "@fortawesome/free-solid-svg-icons";
 import SensorsActiveVSOfflinePieChart from "../components/SensorsActiveVSOfflinePieChart";
 import RealTimeSensorsLocationMap from "../components/RealTimeSensorsLocationMap";
 import WaterLevelRainfallTrendLineChart from "../components/WaterLevelRainfallTrendLineChart";
+import { faPowerOff } from "@fortawesome/free-solid-svg-icons/faPowerOff";
+import { faWaterLadder } from "@fortawesome/free-solid-svg-icons/faWaterLadder";
 
 export default function SensorsPage() {
   const sensor_readings = [
@@ -38,7 +48,7 @@ export default function SensorsPage() {
       location: "Osmena",
       measurement: 4.2,
       unit: "m",
-      status: "Active",
+      status: "Offline",
     },
     {
       sensor_id: "CDO-SR04-005",
@@ -99,7 +109,12 @@ export default function SensorsPage() {
             <span className="text-black text-[20px] font-bold">150</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faSatelliteDish}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -110,7 +125,12 @@ export default function SensorsPage() {
             <span className="text-black text-[20px] font-bold">5</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faPowerOff}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -121,7 +141,12 @@ export default function SensorsPage() {
             <span className="text-black text-[20px] font-bold">3.5m</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faWaterLadder}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -134,7 +159,12 @@ export default function SensorsPage() {
             <span className="text-black text-[20px] font-bold">75mm</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faCloudMoonRain}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -145,7 +175,12 @@ export default function SensorsPage() {
             <span className="text-black text-[20px] font-bold">95%</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[15px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faEarthAsia}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -183,7 +218,13 @@ export default function SensorsPage() {
                   className="transition hover:bg-gray-50 text-[9px]"
                 >
                   <td className="flex justify-end items-center py-[10px] pr-[10px]">
-                    <div className="w-[10px] h-[10px] bg-[#D9D9D9]"></div>
+                    <div
+                      className="w-[10px] h-[10px] rounded-full"
+                      style={{
+                        backgroundColor:
+                          sensor_reading.status == "Active" ? "green" : "red",
+                      }}
+                    ></div>
                   </td>
                   <td className="py-[10px]">{sensor_reading.sensor_id}</td>
                   <td className="py-[10px]">{sensor_reading.type}</td>

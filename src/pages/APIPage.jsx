@@ -1,6 +1,18 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faGear, faBell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faGear,
+  faBell,
+  faCloudMoonRain,
+  faCodePullRequest,
+  faCloud,
+  faUserCheck,
+  faFastForward,
+  faRunning,
+  faGauge,
+  faServer,
+} from "@fortawesome/free-solid-svg-icons";
 import APIRequestCountByEndpointBarGraph from "../components/APIRequestCountByEndpointBarGraph";
 
 export default function APIPage() {
@@ -64,7 +76,12 @@ export default function APIPage() {
             <span className="text-black text-[20px] font-bold">8,200</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[30px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faCodePullRequest}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -77,7 +94,12 @@ export default function APIPage() {
             </span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[30px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faUserCheck}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -88,7 +110,12 @@ export default function APIPage() {
             <span className="text-black text-[20px] font-bold">250ms</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[30px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faGauge}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -99,7 +126,12 @@ export default function APIPage() {
             <span className="text-black text-[20px] font-bold">99.8%</span>
           </div>
           <div className="w-[13%] grid justify-items-end mr-[30px]">
-            <div className="bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faServer}
+              />
+            </div>
           </div>
         </div>
       </div>

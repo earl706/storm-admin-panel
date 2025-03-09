@@ -1,18 +1,44 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faGear, faBell } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faGear,
+  faBell,
+  faCircleRadiation,
+  faChartLine,
+  faSkullCrossbones,
+  faGauge,
+  faTemperature0,
+  faTemperatureLow,
+  faLocationCrosshairs,
+  faStopwatch,
+  faReplyAll,
+  faParachuteBox,
+  faAnglesUp,
+  faSatelliteDish,
+  faHexagonNodes,
+  faPhoneVolume,
+} from "@fortawesome/free-solid-svg-icons";
 import SensorsAlertLevelMap from "../components/SensorsAlertLevelMap";
 import AlertsHistory30DaysChart from "../components/AlertsHistory30DaysChart";
 import AlertsAcknowledgedPieChart from "../components/AlertsAcknowledgedPieChart";
 import AlertSourcesPieChart from "../components/AlertSourcesPieChart";
 import "leaflet/dist/leaflet.css";
+import { faHourglass3 } from "@fortawesome/free-solid-svg-icons/faHourglass3";
 
 export default function AlertsPage() {
+  const severityColors = {
+    Minor: "green",
+    Moderate: "yellow",
+    Severe: "orange",
+    Critical: "red",
+  };
+
   const alerts_history = [
     {
       date: "March 5",
-      minor_alerts: 4,
-      moderate_alerts: 5,
+      minor_alerts: 6,
+      moderate_alerts: 3,
       severe_alerts: 3,
       critical_alerts: 1,
     },
@@ -26,25 +52,43 @@ export default function AlertsPage() {
     {
       date: "March 3",
       minor_alerts: 4,
-      moderate_alerts: 5,
-      severe_alerts: 3,
+      moderate_alerts: 3,
+      severe_alerts: 5,
       critical_alerts: 1,
     },
     {
       date: "March 2",
       minor_alerts: 4,
-      moderate_alerts: 5,
+      moderate_alerts: 4,
       severe_alerts: 3,
-      critical_alerts: 1,
+      critical_alerts: 6,
     },
     {
       date: "March 1",
       minor_alerts: 4,
       moderate_alerts: 5,
       severe_alerts: 3,
-      critical_alerts: 1,
+      critical_alerts: 7,
     },
   ];
+
+  const getMostAlertsInColor = (alerts) => {
+    var [highest, obj] = [0, ""];
+    for (var alert in alerts) {
+      if (alerts[alert].count > highest) {
+        highest = alerts[alert].count;
+        obj = alerts[alert].alert;
+      }
+    }
+    const severityColors = {
+      Minor: "green",
+      Moderate: "yellow",
+      Severe: "orange",
+      Critical: "red",
+    };
+
+    return severityColors[obj];
+  };
 
   const alerts = [
     {
@@ -118,92 +162,89 @@ export default function AlertsPage() {
           <span className="font-bold text-[14px]">Alerts</span>
         </div>
       </div>
-      <div className="flex justify-between gap-[40px] mb-[40px]">
-        <div className="flex items-center justify-between w-full pr-[15px] h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-          <div className="flex items-center justify-between">
-            <div className="flex-col items-center justify-center pl-[15px]">
-              <span className="text-gray-600 font-bold text-[10px]">
-                Active Alerts
-              </span>
-              <div className="flex items-center">
-                <span className="font-bold text-[20px] mr-[5px]">1,000</span>
-                <span className="font-bold text-[10px] text-[#14AE5C]">
-                  +50%
-                </span>
-              </div>
+      <div className="flex gap-[40px] w-full mb-[40px]">
+        <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
+          <div className="flex flex-col text-center w-[87%] mt-[13px] mb-[17px]">
+            <span className="text-[#525258] text-[10px] font-bold">
+              Active Alerts
+            </span>
+            <div className="flex justify-center items-center text-black text-[20px] font-bold">
+              {" "}
+              <span className="font-bold text-[20px] mr-[5px]">1,000</span>
+              <span className="font-bold text-[10px] text-[#14AE5C]">+50%</span>
             </div>
           </div>
-          <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
-            {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faCircleRadiation}
-                    /> */}
+          <div className="w-[13%] grid justify-items-end mr-[30px]">
+            <div className="flex justify-center items-center bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]  text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faChartLine}
+              />
+            </div>
           </div>
         </div>
-        <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-          <div className="flex items-center justify-between">
-            <div className="flex-col items-center justify-center pl-[15px]">
-              <span className="text-gray-600 font-bold text-[10px]">
-                Severe Alerts
-              </span>
-              <div className="flex items-center w-full">
-                <span className="font-bold text-[20px] mr-[5px]">234m</span>
-                <span className="font-bold text-[10px] text-[#14AE5C]">
-                  +3%
-                </span>
-              </div>
+        <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
+          <div className="flex flex-col text-center w-[87%] mt-[13px] mb-[17px]">
+            <span className="text-[#525258] text-[10px] font-bold">
+              Severe Alerts
+            </span>
+            <div className="flex justify-center items-center text-black text-[20px] font-bold">
+              {" "}
+              <span className="font-bold text-[20px] mr-[5px]">234m</span>
+              <span className="font-bold text-[10px] text-[#14AE5C]">+3%</span>
             </div>
           </div>
-          <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
-            {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faEye}
-                    /> */}
+          <div className="w-[13%] grid justify-items-end mr-[30px]">
+            <div className="flex justify-center items-center bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]  text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faSkullCrossbones}
+              />
+            </div>
           </div>
         </div>
-        <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-          <div className="flex items-center justify-between">
-            <div className="flex-col items-center justify-center pl-[15px]">
-              <span className="text-gray-600 font-bold text-[10px]">
-                Moderate Alerts
-              </span>
-              <div className="flex items-center">
-                <span className="font-bold text-[20px] mr-[5px]">1,000</span>
-                <span className="font-bold text-[10px] text-[#B3261E]">
-                  -50%
-                </span>
-              </div>
+        <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
+          <div className="flex flex-col text-center w-[87%] mt-[13px] mb-[17px]">
+            <span className="text-[#525258] text-[10px] font-bold">
+              Moderate Alerts
+            </span>
+            <div className="flex justify-center items-center text-black text-[20px] font-bold">
+              {" "}
+              <span className="font-bold text-[20px] mr-[5px]">1,000</span>
+              <span className="font-bold text-[10px] text-[#B3261E]">-50%</span>
             </div>
           </div>
-          <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
-            {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faSatelliteDish}
-                    /> */}
+          <div className="w-[13%] grid justify-items-end mr-[30px]">
+            <div className="flex justify-center items-center bg-[#1E6091] rounded-[10px] w-[50px] h-[50px]  text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faGauge}
+              />
+            </div>
           </div>
         </div>
-        <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-          <div className="flex items-center justify-between">
-            <div className="flex-col items-center justify-center pl-[15px]">
-              <span className="text-gray-600 font-bold text-[10px]">
-                Minor Alerts
-              </span>
-              <div className="flex items-center">
-                <span className="font-bold text-[20px] mr-[5px]">1,000</span>
-                <span className="font-bold text-[10px] text-[#14AE5C]">
-                  +50%
-                </span>
-              </div>
+        <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
+          <div className="flex flex-col text-center w-[87%] mt-[13px] mb-[17px]">
+            <span className="text-[#525258] text-[10px] font-bold">
+              Minor Alerts
+            </span>
+            <div className="flex justify-center items-center text-black text-[20px] font-bold">
+              {" "}
+              <span className="font-bold text-[20px] mr-[5px]">1,000</span>
+              <span className="font-bold text-[10px] text-[#14AE5C]">+50%</span>
             </div>
           </div>
-          <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
-            {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faServer}
-                    /> */}
+          <div className="w-[13%] grid justify-items-end mr-[30px]">
+            <div className="flex justify-center items-center bg-[#1E6091] rounded-[10px] w-[50px] h-[50px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faTemperature0}
+              />
+            </div>
           </div>
         </div>
       </div>
+
       <div className="flex gap-[40px] w-full mb-[40px]">
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
           <div className="flex flex-col text-center w-[87%] mt-[13px] mb-[17px]">
@@ -213,7 +254,12 @@ export default function AlertsPage() {
             <span className="text-black text-[20px] font-bold">Kauswagan</span>
           </div>
           <div className="w-[13%] grid justify-items-end">
-            <div className="bg-[#1E6091] rounded-[10px] mr-[15px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center bg-[#1E6091] mr-[15px] rounded-[10px] w-[50px] h-[50px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faLocationCrosshairs}
+              />
+            </div>
           </div>
         </div>
         <div className="flex w-full items-center bg-white rounded-[15px] drop-shadow-lg">
@@ -224,7 +270,12 @@ export default function AlertsPage() {
             <span className="text-black text-[20px] font-bold">8 mins</span>
           </div>
           <div className="w-[13%] grid justify-items-end">
-            <div className="bg-[#1E6091] rounded-[10px] mr-[15px] w-[50px] h-[50px]"></div>
+            <div className="flex justify-center items-center bg-[#1E6091] mr-[15px] rounded-[10px] w-[50px] h-[50px] text-white">
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faStopwatch}
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -253,7 +304,12 @@ export default function AlertsPage() {
                   className="transition hover:bg-gray-50 text-[9px]"
                 >
                   <td className="flex justify-end items-center py-[10px] pr-[10px]">
-                    <div className="w-[10px] h-[10px] bg-[#D9D9D9]"></div>
+                    <div
+                      className="w-[10px] h-[10px] rounded-full"
+                      style={{
+                        backgroundColor: severityColors[alert.alert_level],
+                      }}
+                    ></div>
                   </td>
                   <td className="py-[10px]">{alert.alert_id}</td>
                   <td className="py-[10px]">{alert.timestamp}</td>
@@ -273,10 +329,10 @@ export default function AlertsPage() {
           </button>
         </div>
       </div>
-      <div className="bg-white rounded-[15px] w-full pt-[30px] mb-[40px]">
-        <div className="w-full font-bold text-[12px] text-center px-[20px] mb-[40px]">
-          <span>Alert Levels Map</span>
-        </div>
+      <div className="w-full text-center font-bold mb-[15px]">
+        <span className="font-bold text-[14px]">Alert Levels Map</span>
+      </div>
+      <div className="bg-white rounded-[15px] w-full mb-[40px]">
         <div className="">
           <SensorsAlertLevelMap />
         </div>
@@ -306,7 +362,26 @@ export default function AlertsPage() {
                   className="transition hover:bg-gray-50 text-[9px]"
                 >
                   <td className="flex justify-end items-center py-[10px] pr-[10px]">
-                    <div className="w-[10px] h-[10px] bg-[#D9D9D9]"></div>
+                    <div
+                      className="w-[10px] h-[10px] rounded-full"
+                      style={{
+                        backgroundColor: getMostAlertsInColor([
+                          { alert: "Minor", count: alert_history.minor_alerts },
+                          {
+                            alert: "Moderate",
+                            count: alert_history.moderate_alerts,
+                          },
+                          {
+                            alert: "Severe",
+                            count: alert_history.severe_alerts,
+                          },
+                          {
+                            alert: "Critical",
+                            count: alert_history.critical_alerts,
+                          },
+                        ]),
+                      }}
+                    ></div>
                   </td>
                   <td className="py-[10px]">{alert_history.date}</td>
                   <td className="py-[10px]">{alert_history.minor_alerts}</td>
@@ -343,12 +418,13 @@ export default function AlertsPage() {
       <div className="flex w-full justify-center items-center gap-[40px] mb-[40px]">
         <div className="flex flex-col w-full justify-between gap-[40px] mb-[40px]">
           <div className="flex items-center justify-between w-full pr-[15px] h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex-col items-center justify-center pl-[15px]">
-                <span className="text-gray-600 font-bold text-[8px]">
+            <div className="flex w-[85%] items-center justify-between">
+              <div className="flex-col w-full items-center justify-center pl-[15px] text-center">
+                <span className=" text-gray-600 font-bold text-[10px]">
                   Total Alerts in the Last 24 Hours
                 </span>
-                <div className="flex items-center">
+                <div className="flex justify-center items-center text-black text-[20px] font-bold">
+                  {" "}
                   <span className="font-bold text-[20px] mr-[5px]">25</span>
                   <span className="font-bold text-[10px] text-[#14AE5C]">
                     +50%
@@ -357,19 +433,20 @@ export default function AlertsPage() {
               </div>
             </div>
             <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
-              {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faCircleRadiation}
-                    /> */}
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faHourglass3}
+              />
             </div>
           </div>
           <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex-col items-center justify-center pl-[15px]">
-                <span className="text-gray-600 font-bold text-[8px]">
+            <div className="flex w-[85%] items-center justify-between">
+              <div className="flex-col w-full items-center justify-center pl-[15px] text-center">
+                <span className=" text-gray-600 font-bold text-[10px]">
                   Average Acknowledgement Time
                 </span>
-                <div className="flex items-center w-full">
+                <div className="flex justify-center items-center text-black text-[20px] font-bold">
+                  {" "}
                   <span className="font-bold text-[20px] mr-[5px]">8 mins</span>
                   <span className="font-bold text-[10px] text-[#14AE5C]">
                     +3%
@@ -378,19 +455,20 @@ export default function AlertsPage() {
               </div>
             </div>
             <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
-              {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faEye}
-                    /> */}
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faReplyAll}
+              />
             </div>
           </div>
           <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex-col items-center justify-center pl-[15px]">
-                <span className="text-gray-600 font-bold text-[8px]">
+            <div className="flex w-[85%] items-center justify-between">
+              <div className="flex-col w-full items-center justify-center pl-[15px] text-center">
+                <span className=" text-gray-600 font-bold text-[10px]">
                   Average Resolution Time
                 </span>
-                <div className="flex items-center">
+                <div className="flex justify-center items-center text-black text-[20px] font-bold">
+                  {" "}
                   <span className="font-bold text-[20px] mr-[5px]">
                     32 mins
                   </span>
@@ -401,19 +479,20 @@ export default function AlertsPage() {
               </div>
             </div>
             <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
-              {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faSatelliteDish}
-                    /> */}
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faParachuteBox}
+              />
             </div>
           </div>
           <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex-col items-center justify-center pl-[15px]">
-                <span className="text-gray-600 font-bold text-[8px]">
+            <div className="flex w-[85%] items-center justify-between">
+              <div className="flex-col w-full items-center justify-center pl-[15px] text-center">
+                <span className=" text-gray-600 font-bold text-[10px]">
                   Alerts Escalated to Authorities
                 </span>
-                <div className="flex items-center">
+                <div className="flex justify-center items-center text-black text-[20px] font-bold">
+                  {" "}
                   <span className="font-bold text-[20px] mr-[5px]">3</span>
                   <span className="font-bold text-[10px] text-[#14AE5C]">
                     +50%
@@ -421,11 +500,12 @@ export default function AlertsPage() {
                 </div>
               </div>
             </div>
+
             <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
-              {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faServer}
-                    /> */}
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faAnglesUp}
+              />
             </div>
           </div>
         </div>
@@ -457,48 +537,56 @@ export default function AlertsPage() {
               </div>
             </div>
             <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] rounded-[10px] text-white">
-              {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faCircleRadiation}
-                    /> */}
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faSatelliteDish}
+              />
             </div>
           </div>
           <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex-col items-center justify-center pl-[15px]">
-                <span className="text-gray-600 font-bold text-[8px]">
+            <div className="flex w-[85%] items-center justify-between">
+              <div className="flex-col w-full items-center justify-center pl-[15px] text-center">
+                <span className=" text-gray-600 font-bold text-[10px]">
                   Weather Model Predictions
                 </span>
-                <div className="flex items-center">
-                  <span className="font-bold text-[20px] mr-[5px]">5</span>
-                  <span className="font-light text-[20px]">| 20%</span>
+                <div className="flex justify-center items-center w-full text-center">
+                  <span className="flex justify-end w-full font-bold text-[20px] mr-[5px]">
+                    25
+                  </span>
+                  <span className="flex justify-start w-full font-light text-[20px] text-center">
+                    | 50%
+                  </span>
                 </div>
               </div>
             </div>
             <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
-              {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faEye}
-                    /> */}
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faHexagonNodes}
+              />
             </div>
           </div>
           <div className="flex items-center justify-between w-full h-[75px] bg-white rounded-[15px] drop-shadow-lg">
-            <div className="flex items-center justify-between">
-              <div className="flex-col items-center justify-center pl-[15px]">
-                <span className="text-gray-600 font-bold text-[8px]">
+            <div className="flex w-[85%] items-center justify-between">
+              <div className="flex-col w-full items-center justify-center pl-[15px] text-center">
+                <span className=" text-gray-600 font-bold text-[10px]">
                   Manually Reported Alerts
                 </span>
-                <div className="flex items-center">
-                  <span className="font-bold text-[20px] mr-[5px]">2</span>
-                  <span className="font-light text-[20px]">| 8%</span>
+                <div className="flex justify-center items-center w-full text-center">
+                  <span className="flex justify-end w-full font-bold text-[20px] mr-[5px]">
+                    2
+                  </span>
+                  <span className="flex justify-start w-full font-light text-[20px] text-center">
+                    | 8%
+                  </span>
                 </div>
               </div>
             </div>
             <div className="flex justify-center items-center w-[50px] h-[50px] bg-[#1E6091] mr-[15px] rounded-[10px] text-white">
-              {/* <FontAwesomeIcon
-                      style={{ width: "32px", height: "32px" }}
-                      icon={faSatelliteDish}
-                    /> */}
+              <FontAwesomeIcon
+                style={{ width: "32px", height: "32px" }}
+                icon={faPhoneVolume}
+              />
             </div>
           </div>
         </div>
