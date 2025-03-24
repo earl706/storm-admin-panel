@@ -15,7 +15,7 @@ import InsightsHighRiskFloodAreasHeatmap from "../components/InsightsHighRiskFlo
 import FloodProbabilityByRegionLineChart from "../components/FloodProbabilityByRegionLineChart";
 import RainFallFloodProbabilityLineChart from "../components/RainFallFloodProbabilityLineChart";
 
-export default function InsightsPage() {
+export default function InsightsPage({ device }) {
   const severityColors = {
     Low: "green",
     Minor: "yellow",

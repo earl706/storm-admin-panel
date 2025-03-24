@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import APIRequestCountByEndpointBarGraph from "../components/APIRequestCountByEndpointBarGraph";
 
-export default function APIPage() {
+export default function APIPage({ device }) {
   const endpoints = [
     {
       method: "GET",

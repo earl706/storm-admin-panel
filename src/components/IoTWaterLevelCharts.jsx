@@ -47,7 +47,7 @@ export default function IoTWaterLevelCharts() {
         stacked: true,
         ticks: {
           font: {
-            size: 7, // Adjust Y-axis font size
+            size: 4, // Adjust Y-axis font size
           },
         },
       },
@@ -55,7 +55,7 @@ export default function IoTWaterLevelCharts() {
         stacked: true,
         ticks: {
           font: {
-            size: 6, // Adjust Y-axis font size
+            size: 4, // Adjust Y-axis font size
           },
         },
       },

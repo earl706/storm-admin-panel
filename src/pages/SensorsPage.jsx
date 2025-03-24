@@ -16,7 +16,7 @@ import WaterLevelRainfallTrendLineChart from "../components/WaterLevelRainfallTr
 import { faPowerOff } from "@fortawesome/free-solid-svg-icons/faPowerOff";
 import { faWaterLadder } from "@fortawesome/free-solid-svg-icons/faWaterLadder";
 
-export default function SensorsPage() {
+export default function SensorsPage({ device }) {
   const sensor_readings = [
     {
       sensor_id: "CDO-SR04-001",
