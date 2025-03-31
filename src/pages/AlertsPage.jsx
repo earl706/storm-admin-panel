@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import {
   faUser,
   faGear,
@@ -26,11 +27,23 @@ import AlertSourcesPieChart from "../components/AlertSourcesPieChart";
 import "leaflet/dist/leaflet.css";
 import { faHourglass3 } from "@fortawesome/free-solid-svg-icons/faHourglass3";
 
+const locations = [
+  { name: "Borja Bridge", lat: 8.482, lon: 124.647 },
+  { name: "Pelaez Bridge", lat: 8.477, lon: 124.645 },
+  { name: "Cabula Bridge", lat: 8.352, lon: 124.592 },
+  { name: "Uguiaban Bridge", lat: 8.28, lon: 124.57 },
+  { name: "Tal-uban Bridge", lat: 8.15, lon: 124.55 },
+  { name: "Liboran Station", lat: 8.25, lon: 124.6 },
+  { name: "NIA Bubunawan Irrigation", lat: 8.2, lon: 124.58 },
+];
+
+const openWeatherAPIKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
 function AlertsPageMobile({
-  severityColors,
   alerts_history,
   getMostAlertsInColor,
   alerts,
+  severityColors,
 }) {
   return (
     <>
@@ -603,6 +616,46 @@ export default function AlertsPage({ device }) {
       actions: "Acknowledge",
     },
   ];
+  const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+  const [waterLevelsState, setWaterLevelsState] = useState([]);
+
+  const fetchWaterLevels = async () => {
+    let waterLevels = [];
+    console.log("sad");
+    for (const location of locations) {
+      try {
+        const response = await axios.get(BASE_URL, {
+          params: {
+            lat: location.lat,
+            lon: location.lon,
+            appid: openWeatherAPIKey,
+            units: "metric",
+          },
+        });
+
+        waterLevels.push(response.data);
+
+        // console.log(`Location: ${location.name}`);
+        // console.log(`Temperature: ${response.data.main.temp}°C`);
+        // console.log(`Humidity: ${response.data.main.humidity}%`);
+        // console.log(`Weather: ${response.data.weather[0].description}`);
+        // console.log("----------------------------------------");
+      } catch (error) {
+        console.error(
+          `Error fetching data for ${location.name}:`,
+          error.message
+        );
+      }
+    }
+    console.log(waterLevels);
+    setWaterLevelsState(waterLevels);
+    return waterLevels;
+  };
+
+  useEffect(() => {
+    fetchWaterLevels();
+  }, []);
+
   if (device == "Desktop") {
     return (
       <>
