@@ -32,10 +32,8 @@ function App() {
 
   useEffect(() => {
     setDeviceType(getDeviceType());
-  }, []);
-  useEffect(() => {
     console.log(deviceType);
-  }, [deviceType]);
+  });
 
   return (
     <>

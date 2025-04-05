@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import IoTWaterLevelCharts from "../components/IoTWaterLevelCharts";
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleRadiation,
@@ -10,6 +11,108 @@ import {
   faGear,
   faBell,
 } from "@fortawesome/free-solid-svg-icons";
+
+const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+const openWeatherAPIKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
+const coordinates = {
+  "Agusan": { lat: 8.484, lon: 124.648 },
+  "Baikingon": { lat: 8.456, lon: 124.603 },
+  "Balulang": { lat: 8.458, lon: 124.632 },
+  "Bayabas": { lat: 8.477, lon: 124.611 },
+  "Bayanga": { lat: 8.39, lon: 124.68 },
+  "Bonbon": { lat: 8.462, lon: 124.618 },
+  "Bugo": { lat: 8.504, lon: 124.698 },
+  "Bulua": { lat: 8.474, lon: 124.582 },
+  "Camaman-an": { lat: 8.472, lon: 124.651 },
+  "Canitoan": { lat: 8.472, lon: 124.599 },
+  "Carmen": { lat: 8.482, lon: 124.636 },
+  "Consolacion": { lat: 8.487, lon: 124.65 },
+  "Cugman": { lat: 8.52, lon: 124.679 },
+  "Dansolihon": { lat: 8.39, lon: 124.58 },
+  "F.S. Catanico": { lat: 8.49, lon: 124.668 },
+  "Gusa": { lat: 8.503, lon: 124.668 },
+  "Indahag": { lat: 8.45, lon: 124.678 },
+  "Iponan": { lat: 8.476, lon: 124.563 },
+  "Kauswagan": { lat: 8.502, lon: 124.63 },
+  "Lapasan": { lat: 8.491, lon: 124.658 },
+  "Lumbia": { lat: 8.41, lon: 124.56 },
+  "Macabalan": { lat: 8.495, lon: 124.657 },
+  "Macasandig": { lat: 8.468, lon: 124.655 },
+  "Nazareth": { lat: 8.462, lon: 124.647 },
+  "Pagatpat": { lat: 8.478, lon: 124.571 },
+  "Patag": { lat: 8.485, lon: 124.58 },
+  "Puntod": { lat: 8.5, lon: 124.65 },
+  "Tablon": { lat: 8.54, lon: 124.72 },
+  "Taglimao": { lat: 8.35, lon: 124.6 },
+  "Tignapoloan": { lat: 8.32, lon: 124.62 },
+};
+
+const barangays = [
+  "Agusan",
+  "Baikingon",
+  "Balulang",
+  "Bayabas",
+  "Bayanga",
+  "Bonbon",
+  "Bugo",
+  "Bulua",
+  "Camaman-an",
+  "Canitoan",
+  "Carmen",
+  "Consolacion",
+  "Cugman",
+  "Dansolihon",
+  "F.S. Catanico",
+  "Gusa",
+  "Indahag",
+  "Iponan",
+  "Kauswagan",
+  "Lapasan",
+  "Lumbia",
+  "Macabalan",
+  "Macasandig",
+  "Nazareth",
+  "Pagatpat",
+  "Patag",
+  "Puntod",
+  "Tablon",
+  "Taglimao",
+  "Tignapoloan",
+];
+
+const barangayPopulation = {
+  "Agusan": 12500,
+  "Baikingon": 4800,
+  "Balulang": 26000,
+  "Bayabas": 4500,
+  "Bayanga": 3900,
+  "Bonbon": 7500,
+  "Bugo": 10800,
+  "Bulua": 26500,
+  "Camaman-an": 12000,
+  "Canitoan": 18700,
+  "Carmen": 31500,
+  "Consolacion": 13400,
+  "Cugman": 9300,
+  "Dansolihon": 3200,
+  "F.S. Catanico": 2800,
+  "Gusa": 14800,
+  "Indahag": 10200,
+  "Iponan": 9500,
+  "Kauswagan": 19400,
+  "Lapasan": 12400,
+  "Lumbia": 13400,
+  "Macabalan": 12300,
+  "Macasandig": 17000,
+  "Nazareth": 18200,
+  "Pagatpat": 8600,
+  "Patag": 8800,
+  "Puntod": 10500,
+  "Tablon": 8700,
+  "Taglimao": 3400,
+  "Tignapoloan": 2900,
+};
 
 function MobileDashboard({
   severityColors,
@@ -230,7 +333,7 @@ function MobileDashboard({
         <div className="flex flex-col md:flex-row gap-[40px] mb-[40px]">
           <div className="w-full h-auto bg-white shadow-md rounded-2xl border border-gray-200">
             <h1 className="my-[20px] ml-[24px] text-[8px] font-bold">
-              IoT Sensors Average Water Level
+              Average Water Level
             </h1>
             <div className="mx-[28px] mb-[24px] text-[4px]">
               <IoTWaterLevelCharts />
@@ -261,6 +364,10 @@ function MobileDashboard({
 }
 
 export default function Dashboard({ device }) {
+  const [riverFlowProbabilityPerBarangay, setRiverFlowProbabilityPerBarangay] =
+    useState([]);
+  const [top5RiverFlowBarangays, setTop5RiverFlowBarangays] = useState([]);
+
   const severityColors = {
     Minor: "green",
     Moderate: "yellow",
@@ -351,6 +458,104 @@ export default function Dashboard({ device }) {
   }, [device]);
 
   if (device == "Desktop") {
+    function calculateRiverFlowPercent(rain, humidity) {
+      let base = 0;
+      if (rain > 0) base += rain * 12; // rain mm → %
+      if (humidity > 70) base += (humidity - 70) * 0.5;
+      return Math.min(base, 100); // max 100%
+    }
+
+    function calculateFloodProbability(rain, humidity, weather) {
+      let probability = 0;
+      if (rain) probability += rain * 10;
+      if (humidity > 80) probability += 20;
+      if (weather.includes("thunderstorm") || weather.includes("heavy rain"))
+        probability += 30;
+      return Math.min(probability, 100);
+    }
+
+    function estimateAffectedPopulation(
+      population,
+      floodProbability,
+      exposureFactor = 0.25
+    ) {
+      return Math.round(
+        ((population * floodProbability) / 100) * exposureFactor
+      );
+    }
+
+    function getTop5RiverFlowBarangays(dataArray) {
+      // Sort the array by riverFlowPercent in descending order
+      const sorted = [...dataArray].sort(
+        (a, b) => b.riverFlowPercent - a.riverFlowPercent
+      );
+
+      // Return the top 5 with full data
+      return sorted.slice(0, 5);
+    }
+
+    const analyzeRiverFlowAndPopulation = async () => {
+      console.log("sad1");
+      let barangayPerRiverFlow = [];
+      for (const barangay of barangays) {
+        const { lat, lon } = coordinates[barangay] || {};
+        const population = barangayPopulation[barangay] || 10000;
+
+        if (!lat || !lon) {
+          console.warn(`Missing coordinates for ${barangay}`);
+          continue;
+        }
+
+        try {
+          const response = await axios.get(BASE_URL, {
+            params: {
+              lat,
+              lon,
+              appid: openWeatherAPIKey,
+              units: "metric",
+            },
+          });
+
+          const weatherData = response.data;
+          const rain = weatherData.rain?.["1h"] || 0;
+          const humidity = weatherData.main.humidity;
+          const weatherDesc = weatherData.weather[0].description;
+
+          const riverFlowPercent = calculateRiverFlowPercent(rain, humidity);
+          const floodProbability = calculateFloodProbability(
+            rain,
+            humidity,
+            weatherDesc
+          );
+          const affectedPop = estimateAffectedPopulation(
+            population,
+            floodProbability
+          );
+
+          barangayPerRiverFlow.push({
+            barangay: barangay,
+            weatherData: weatherData,
+            riverFlowPercent: riverFlowPercent,
+            floodProbability: floodProbability,
+            affectedPop: affectedPop,
+          });
+        } catch (err) {
+          console.error(`Error fetching data for ${barangay}:`, err.message);
+        }
+      }
+      const topFiveRiverFlow = getTop5RiverFlowBarangays(barangayPerRiverFlow);
+      setRiverFlowProbabilityPerBarangay(barangayPerRiverFlow);
+      setTop5RiverFlowBarangays(
+        getTop5RiverFlowBarangays(barangayPerRiverFlow)
+      );
+      console.log(topFiveRiverFlow);
+      return barangayPerRiverFlow;
+    };
+
+    useEffect(() => {
+      analyzeRiverFlowAndPopulation();
+    }, []);
+
     return (
       <>
         <div className="pt-[15px]">
@@ -535,7 +740,7 @@ export default function Dashboard({ device }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {insights.map((insight, index) => (
+                    {top5RiverFlowBarangays.map((insight, index) => (
                       <tr
                         key={index}
                         className="transition border-b-[0.20px] border-t-[#808080] hover:bg-gray-50 text-[8px]"
@@ -551,16 +756,16 @@ export default function Dashboard({ device }) {
                           ></div>
                         </td>
                         <td className="py-[10px] pr-[10px]">
-                          {insight.region}
+                          {insight.barangay}
                         </td>
                         <td className="py-[10px] pr-[10px]">
-                          {insight.forecast_date}
+                          {new Date().toLocaleDateString()}
                         </td>
                         <td className="py-[10px] pr-[10px]">
-                          {insight.river_flow_probability}
+                          {insight.riverFlowPercent}
                         </td>
                         <td className="py-[10px] pr-[10px]">
-                          {insight.affected_population}
+                          {insight.affectedPop}
                         </td>
                       </tr>
                     ))}
@@ -577,7 +782,7 @@ export default function Dashboard({ device }) {
           <div className="flex gap-[40px] mb-[40px]">
             <div className="w-full h-auto bg-white shadow-md rounded-2xl border border-gray-200">
               <h1 className="my-[30px] ml-[30px] text-[12px] font-bold">
-                IoT Sensors Average Water Level
+                Average Water Level
               </h1>
               <div className="mx-[35px] mb-[24px] text-[7px]">
                 <IoTWaterLevelCharts />
