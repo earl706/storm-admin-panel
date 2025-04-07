@@ -610,7 +610,7 @@ export default function Dashboard({ device }) {
                     Insights Today
                   </span>
                   <div className="flex items-center w-full">
-                    <span className="font-bold text-[20px] mr-[5px]">234m</span>
+                    <span className="font-bold text-[20px] mr-[5px]">234</span>
                     <span className="font-bold text-[10px] text-[#14AE5C]">
                       +3%
                     </span>

@@ -132,17 +132,12 @@ export default function FloodProbabilityByRegionLineChart() {
           humidity,
           weatherDesc
         );
-        console.log(
-          `Flood Probability: ${floodProbability}, Barangay: ${barangay}`
-        );
         floodData.push(floodProbability);
       } catch (error) {
         console.error(`Error fetching data for ${barangay}:`, error.message);
       }
     }
     setFloodProbability(floodData);
-    console.log(floodData);
-    console.log(fullData);
     return floodData;
   }
 

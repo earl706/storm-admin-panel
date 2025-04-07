@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 import { format, subDays } from "date-fns";
 import {
   faUser,
@@ -14,8 +15,83 @@ import {
 import InsightsHighRiskFloodAreasHeatmap from "../components/InsightsHighRiskFloodAreasHeatmap";
 import FloodProbabilityByRegionLineChart from "../components/FloodProbabilityByRegionLineChart";
 import RainFallFloodProbabilityLineChart from "../components/RainFallFloodProbabilityLineChart";
+import FloodHeatmap from "../components/FloodHeatmap";
 
+const BASE_URL = "https://api.openweathermap.org/data/2.5/weather";
+const openWeatherAPIKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+
+const barangays = [
+  { name: "Agusan", lat: 8.484, lon: 124.648, population: 19039 },
+  { name: "Baikingon", lat: 8.456, lon: 124.603, population: 2879 },
+  { name: "Balulang", lat: 8.458, lon: 124.632, population: 42205 },
+  { name: "Bayabas", lat: 8.477, lon: 124.611, population: 3700 },
+  { name: "Bayanga", lat: 8.39, lon: 124.68, population: 2714 },
+  { name: "Bonbon", lat: 8.462, lon: 124.618, population: 6716 },
+  { name: "Bugo", lat: 8.504, lon: 124.698, population: 27172 },
+  { name: "Bulua", lat: 8.474, lon: 124.582, population: 37728 },
+  { name: "Camaman-an", lat: 8.472, lon: 124.651, population: 13275 },
+  { name: "Canitoan", lat: 8.472, lon: 124.599, population: 20566 },
+  { name: "Carmen", lat: 8.482, lon: 124.636, population: 61665 },
+  { name: "Consolacion", lat: 8.487, lon: 124.65, population: 11540 },
+  { name: "Cugman", lat: 8.52, lon: 124.679, population: 11245 },
+  { name: "Dansolihon", lat: 8.39, lon: 124.58, population: 1795 },
+  { name: "F.S. Catanico", lat: 8.49, lon: 124.668, population: 1656 },
+  { name: "Gusa", lat: 8.503, lon: 124.668, population: 18158 },
+  { name: "Indahag", lat: 8.45, lon: 124.678, population: 12695 },
+  { name: "Iponan", lat: 8.476, lon: 124.563, population: 14034 },
+  { name: "Kauswagan", lat: 8.502, lon: 124.63, population: 28111 },
+  { name: "Lapasan", lat: 8.491, lon: 124.658, population: 19354 },
+  { name: "Lumbia", lat: 8.41, lon: 124.56, population: 30106 },
+  { name: "Macabalan", lat: 8.495, lon: 124.657, population: 16389 },
+  { name: "Macasandig", lat: 8.468, lon: 124.655, population: 19100 },
+  { name: "Nazareth", lat: 8.462, lon: 124.647, population: 26651 },
+  { name: "Pagatpat", lat: 8.478, lon: 124.571, population: 9260 },
+  { name: "Patag", lat: 8.485, lon: 124.58, population: 10137 },
+  { name: "Puntod", lat: 8.5, lon: 124.65, population: 18147 },
+  { name: "Tablon", lat: 8.54, lon: 124.72, population: 11935 },
+  { name: "Taglimao", lat: 8.35, lon: 124.6, population: 2114 },
+  { name: "Tignapoloan", lat: 8.32, lon: 124.62, population: 2472 },
+];
 export default function InsightsPage({ device }) {
+  const [data, setData] = useState([]);
+
+  const classifyFloodRisk = (mm) => {
+    if (mm < 1) return { label: "Low", score: 0.2 };
+    if (mm < 5) return { label: "Moderate", score: 0.5 };
+    if (mm < 15) return { label: "High", score: 0.75 };
+    return { label: "Severe", score: 1 };
+  };
+
+  const fetchRainData = async () => {
+    const results = await Promise.all(
+      barangays.map(async (b) => {
+        const res = await axios.get(
+          `https://api.openweathermap.org/data/2.5/forecast?lat=${b.lat}&lon=${b.lon}&appid=${openWeatherAPIKey}&units=metric`
+        );
+        const forecasts = res.data.list.slice(0, 8); // next 24 hours
+        const totalRain = forecasts.reduce(
+          (sum, f) => sum + (f.rain?.["3h"] || 0),
+          0
+        );
+        const risk = classifyFloodRisk(totalRain);
+        const atRiskPop = b.population * risk.score;
+        // const infra = {
+        //   roads: Math.round(risk.score * b.roads * 100),
+        //   bridges: Math.round(risk.score * b.bridges * 100),
+        // };
+        return {
+          ...b,
+          totalRain,
+          risk,
+          atRiskPop,
+          // infra,
+        };
+      })
+    );
+
+    setData(results);
+  };
+
   const severityColors = {
     Low: "green",
     Minor: "yellow",
@@ -83,6 +159,10 @@ export default function InsightsPage({ device }) {
       recommended_action: "Evacuate low-lying areas",
     },
   ];
+
+  useEffect(() => {
+    fetchRainData();
+  }, []);
 
   return (
     <>
@@ -201,9 +281,10 @@ export default function InsightsPage({ device }) {
           Heatmap of High-risk Flood Areas
         </span>
       </div>
-      <div className="bg-white rounded-[15px] w-full mb-[40px]">
+      <div className="rounded-[15px] w-full mb-[40px]">
         <div className="">
-          <InsightsHighRiskFloodAreasHeatmap />
+          {/* <InsightsHighRiskFloodAreasHeatmap /> */}
+          <FloodHeatmap />
         </div>
       </div>
       <div className="w-full text-center font-bold mb-[15px]">

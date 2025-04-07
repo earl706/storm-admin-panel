@@ -77,14 +77,14 @@ export default function RainFallFloodProbabilityLineChart() {
     labels: getPast30Days(),
     datasets: [
       {
-        label: "Rainfall",
+        label: "Flood Probability",
         backgroundColor: "#1E6091",
         data: generateRainFallData().map((num) => (num / 150) * 100),
         borderColor: "#1E6091",
         tension: 0.1,
       },
       {
-        label: "Flood Probability",
+        label: "Rainfall",
         backgroundColor: "#B3261E",
         data: generateRainFallData().map((num) => (num / 150) * 100),
         borderColor: "#B3261E",
