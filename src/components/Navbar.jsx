@@ -110,20 +110,6 @@ export default function Navbar({ children, device }) {
               ))}
             </ul>
           </nav>
-          <div className=" overflow-hidden">
-            <NavLink
-              to="/login"
-              onClick={() => {
-                localStorage.clear();
-              }}
-              className="flex w-[213px] font-bold text-[14px] justify-start items-center transition py-[8px] px-[10px] mb-[10px] rounded-lg text-[#525252] hover:bg-white hover:drop-shadow-lg hover:text-[#1E6091]"
-            >
-              <div className="flex justify-center items-center w-[34px] h-[34px] bg-[#1E6091] rounded-[10px] mr-[13px] text-white">
-                <FontAwesomeIcon icon={faRightFromBracket} />
-              </div>
-              Logout
-            </NavLink>
-          </div>
         </aside>
         <main className="flex-grow w-[1134px] ml-64">
           <div className="pl-[40px] pr-[27px]">{children}</div>

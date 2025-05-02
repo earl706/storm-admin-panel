@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
@@ -41,34 +42,46 @@ const locations = [
 
 const FloodHeatmap = () => {
   const mapContainer = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchRainRisk = async (lat, lon) => {
-    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
+    try {
+      setLoading(true);
+      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
 
-    const res = await axios.get(url);
-    const list = res.data.list;
+      const res = await axios.get(url);
+      const list = res.data.list;
 
-    const maxRain = list.slice(0, 4).reduce((max, item) => {
-      const rain = item.rain?.["3h"] || 0;
-      return rain > max ? rain : max;
-    }, 0);
+      const maxRain = list.slice(0, 4).reduce((max, item) => {
+        const rain = item.rain?.["3h"] || 0;
+        return rain > max ? rain : max;
+      }, 0);
 
-    // Assign risk level based on max rain
-    let risk = 0;
-    if (maxRain < 1) risk = 0.2; // green
-    else if (maxRain < 5) risk = 0.5; // yellow
-    else if (maxRain < 15) risk = 0.75; // orange
-    else risk = 1.0; // red
-
-    return { risk, maxRain };
+      // Assign risk level based on max rain
+      let risk = 0;
+      if (maxRain < 1) risk = 0.2; // green
+      else if (maxRain < 5) risk = 0.5; // yellow
+      else if (maxRain < 15) risk = 0.75; // orange
+      else risk = 1.0; // red
+      setLoading(false);
+      return { risk, maxRain };
+    } catch (err) {
+      return err;
+    }
   };
 
   useEffect(() => {
     const initMap = async () => {
       const map = new mapboxgl.Map({
         container: mapContainer.current,
-        style: "mapbox://styles/mapbox/dark-v11",
-        center: [124.64, 8.48],
+        // style: "mapbox://styles/mapbox/standard",
+        config: {
+          basemap: {
+            lightPreset: "day",
+            showPointOfInterestLabels: false,
+          },
+        },
+        center: [124.6498, 8.4803],
         zoom: 12,
         pitch: 60,
         bearing: -20,
